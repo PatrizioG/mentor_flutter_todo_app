@@ -5,10 +5,16 @@ void main() {
   runApp(const TodoApp());
 }
 
-class TodoApp extends StatelessWidget {
+class TodoApp extends StatefulWidget {
   const TodoApp({super.key});
 
-  // This widget is the root of your application.
+  @override
+  State<TodoApp> createState() => _TodoAppState();
+}
+
+class _TodoAppState extends State<TodoApp> {
+  final List<String> items = [];
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -37,10 +43,15 @@ class TodoApp extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8.0),
                         color: const HSLColor.fromAHSL(1, 234, 0.11, 0.52)
                             .toColor()),
-                    child: const TextField(
-                        decoration: InputDecoration(
-                            icon: Icon(Icons.circle_outlined),
-                            border: InputBorder.none)),
+                    child: TextField(
+                      onSubmitted: (value) {
+                        items.add(value);
+                        setState(() {});
+                      },
+                      decoration: const InputDecoration(
+                          icon: Icon(Icons.circle_outlined),
+                          border: InputBorder.none),
+                    ),
                   ),
                   Container(
                       width: 300,
@@ -49,7 +60,7 @@ class TodoApp extends StatelessWidget {
                           borderRadius: BorderRadius.circular(8.0),
                           color: const HSLColor.fromAHSL(1, 234, 0.11, 0.52)
                               .toColor()),
-                      child: const ReorderableTodoList())
+                      child: ReorderableTodoList(items))
                 ],
               ),
             ],
